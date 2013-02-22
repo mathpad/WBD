@@ -51,6 +51,8 @@ public class FullscreenActivity extends Activity {
      * The instance of the {@link SystemUiHider} for this activity.
      */
     private SystemUiHider mSystemUiHider;
+    
+    GraphicsView gv; 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +121,9 @@ public class FullscreenActivity extends Activity {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+   
+        gv = new GraphicsView(this);
+        
     }
 
     @Override
