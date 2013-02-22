@@ -123,7 +123,7 @@ public class FullscreenActivity extends Activity {
         findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
    
         gv = new GraphicsView(this);
-        gv.invalidate();
+        setContentView(gv);
         
     }
 
