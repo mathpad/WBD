@@ -124,7 +124,6 @@ public class FullscreenActivity extends Activity {
    
         gv = new GraphicsView(this);
         setContentView(gv);
-        mSystemUiHider.hide();
     }
 
     @Override
