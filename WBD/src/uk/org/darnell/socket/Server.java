@@ -66,8 +66,8 @@ public class Server{
 		case 7:
 			int X,Y;
 			int numBytes = in.readByte() - 4;
-			X = in.readByte() + in.readByte() * 256;
-			Y = in.readByte() + in.readByte() * 256;
+			X = (0x00FF & in.readByte()) + (0xFF00 & (in.readByte() << 8));
+			Y = (0x00FF & in.readByte()) + (0xFF00 & (in.readByte() << 8));
 			
 			handler.sendMessage(handler.obtainMessage(4,X,Y));
 			
