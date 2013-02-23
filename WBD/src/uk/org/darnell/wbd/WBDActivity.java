@@ -2,6 +2,7 @@ package uk.org.darnell.wbd;
 
 import java.util.ArrayList;
 
+import uk.org.darnell.socket.Server;
 import uk.org.darnell.wbd.util.SystemUiHider;
 
 import android.annotation.TargetApi;
@@ -13,11 +14,13 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -25,8 +28,10 @@ import android.view.WindowManager;
  *
  * @see SystemUiHider
  */
-public class FullscreenActivity extends Activity {
-     GraphicsView gv; 
+public class WBDActivity extends Activity {
+	
+	 private final static String TAG = "WBD";
+     private static GraphicsView gv; 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,7 @@ public class FullscreenActivity extends Activity {
 
         gv = new GraphicsView(this);
         setContentView(gv);
+        gv.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
     
 	public class GraphicsView extends View {
@@ -51,7 +57,7 @@ public class FullscreenActivity extends Activity {
 
 		protected void reset()
 		{	
-			Log.d("WBD","reset()");
+			Log.d(TAG,"reset()");
 			redraw = new ArrayList<Integer>();
 			// drawAll();
 		}
@@ -80,5 +86,28 @@ public class FullscreenActivity extends Activity {
 			canvas.drawBitmap(bMap, 0, 0, paint);
 		}
 	}
+	
+	protected static Handler handler = new Handler()
+	{
+		@Override
+		public void handleMessage(Message msg) {
+			
+			Log.d(TAG, "Handler " + msg.what + " " + (String)msg.obj);
+			if (msg.what == 1)
+			{
+				Toast.makeText(gv.getContext(), (String)msg.obj, Toast.LENGTH_SHORT).show();
+				Log.d(TAG, "Made Toast");
+			}
+			else if (msg.what == 2)
+			{
+				Toast.makeText(gv.getContext(), (String)msg.obj, Toast.LENGTH_SHORT).show();
+				//gv.setBackgroundImage(Server.screen);
+			}
+			else if (msg.what == 4) Server.sendMove(msg.arg1,msg.arg2);
+			else if (msg.what == 5) Server.addPoint(msg.arg1,msg.arg2);
+			else if (msg.what == 6) Server.sendPoints(msg.arg1,msg.arg2);
+		}
+	};
+	
     
 }
